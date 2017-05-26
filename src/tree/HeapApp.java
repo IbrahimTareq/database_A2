@@ -15,16 +15,23 @@ public class HeapApp
         final int PAGE_SIZE_4096 = 4096;
         final int PAGE_SIZE_8192 = 8192;
         
+        /**
+         * Uncomment and run this block of code if you want to add all records into the heapfile
+         * Before you do make sure you specify the desired page size
+         */
         //Imports the data into the program from the .csv file
-    	ImportData imp = new ImportData(csvFile);
-    	ArrayList<Record> records = imp.importRecords();   	
-    	demonstrateHeapfile(file, PAGE_SIZE_4096, records);        
+//    	ImportData imp = new ImportData(csvFile);
+//    	ArrayList<Record> records = imp.importRecords();   	
+//    	demonstrateHeapfile(file, PAGE_SIZE_8192, records);        
         
     	//Add dummy records to test working of the heap file
         //addDummyData(file, PAGE_SIZE_4096);
 	
-    	
-//    	HeapFile heap = new HeapFile(file, PAGE_SIZE_4096);
+        /**
+         * Uncomment and run this block of code if you want to search for a record
+         * Before you do make sure the page size corresponds to that of the heapfile
+         */
+//    	HeapFile heap = new HeapFile(file, PAGE_SIZE_8192);
      	//First parameter is the heapfile, second parameter is the hourlyCounts
 //    	heap.searchRecord(file, 150); 
     	

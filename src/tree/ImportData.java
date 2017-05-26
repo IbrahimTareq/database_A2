@@ -18,6 +18,7 @@ public class ImportData {
 		this.csvFile = csvFile;
 	}
 	
+	//Imports data from .csv file into an array list 
 	public ArrayList<Record> importRecords()
 	{
 		BufferedReader br = null;

@@ -27,6 +27,7 @@ public class HeapFile
         }
     }
 	
+    //Function that inserts records into a page
 	public ArrayList<HeapPage> insertRecords(ArrayList<Record> listOfRecords)
 	{
 		//Arraylist that will contain all the pages
@@ -92,6 +93,7 @@ public class HeapFile
     	raf.close();
 	}
 	
+	//Given a value for hourly counts, searches for it on the heapfile
 	public void searchRecord(File file, int hourlyCounts) throws Exception
 	{
 		RandomAccessFile raf = new RandomAccessFile(file, "rw");
