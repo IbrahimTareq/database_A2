@@ -130,9 +130,10 @@ public class HeapPage
 	//Function that converts each field of the record into bytes
 	public void convertRecordToBytes(DataOutputStream dos, Record records[], int i) throws Exception
 	{
+		int hourlyCounts = records[i].hourlyCounts;
+        int id = records[i].id;
 		int pageId = records[i].getRecordId().getPageId();
     	int slotNum = records[i].getRecordId().getSlotNum();
-        int id = records[i].id;
         String dateTime = records[i].dateTime; 
         int year = records[i].year; 
         String month = records[i].month;
@@ -141,11 +142,11 @@ public class HeapPage
 		int time = records[i].time; 
 		int sensorID = records[i].sensorID; 
 		String sensorName = records[i].sensorName; 
-		int hourlyCounts = records[i].hourlyCounts;
 		
+		dos.writeInt(hourlyCounts);
+		dos.writeInt(id);
 		dos.writeInt(pageId);
 		dos.writeByte(slotNum);
-		dos.writeInt(id);
 		dos.writeUTF(dateTime);
 		dos.writeInt(year);
 		dos.writeUTF(month);
@@ -154,7 +155,6 @@ public class HeapPage
 		dos.writeByte(time);
 		dos.writeByte(sensorID);
 		dos.writeUTF(sensorName);
-		dos.writeInt(hourlyCounts);
 	}
 	
 }

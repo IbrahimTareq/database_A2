@@ -2,6 +2,7 @@ package tree;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.RandomAccessFile;
@@ -12,6 +13,7 @@ public class HeapFile
 {
 	private File file;
 	public static final int PAGE_SIZE = 4096;
+	int numOfRecords = 15;
     
     public HeapFile(File f) 
     {
@@ -80,6 +82,63 @@ public class HeapFile
     	{
         	raf.write(pages.get(i).getPageData());	
     	}    
+    	raf.close();
+	}
+	
+	public void searchRecord(File file, int hourlyCounts) throws Exception
+	{
+		RandomAccessFile raf = new RandomAccessFile(file, "rw");
+    	int currentHourlyCounts;
+    	boolean recordFound = false;
+		int offset = 0;
+    	raf.seek(offset);
+    	long sizeOfFile = file.length();
+    	long numOfPages = sizeOfFile / PAGE_SIZE;
+    	
+    	for (int i=0; i < numOfPages; i++)
+    	{
+    		raf.seek(PAGE_SIZE*i);
+    		
+    		for (int j=0; j < numOfRecords; j++)
+    		{
+    			currentHourlyCounts = raf.readInt();
+    			if (currentHourlyCounts != hourlyCounts)
+    			{
+    				raf.readInt();
+    				raf.readInt();
+    				raf.readByte();
+    				raf.readUTF();
+    				raf.readInt();
+    				raf.readUTF();
+    				raf.readByte();
+    				raf.readUTF();
+    				raf.readByte();
+    				raf.readByte();
+    				raf.readUTF();
+    				continue;
+    			}
+    			System.out.println("hourlyCounts: " + currentHourlyCounts);
+    	    	System.out.println("ID: " + raf.readInt());
+    			System.out.println("PID: " + raf.readInt());
+    	    	System.out.println("SlotNum: " + raf.readByte());
+    	    	System.out.println("DateTime: " + raf.readUTF());
+    	    	System.out.println("Year: " + raf.readInt());
+    	    	System.out.println("Month: " + raf.readUTF());
+    	    	System.out.println("mDate: " + raf.readByte());
+    	    	System.out.println("day: " + raf.readUTF());
+    	    	System.out.println("time: " + raf.readByte());
+    	    	System.out.println("sensorID: " + raf.readByte());
+    	    	System.out.println("sensorName: " + raf.readUTF());
+    	    	System.out.println();
+    	    	
+    	    	recordFound = true;
+    		}
+    	}
+    	
+		if (recordFound == false)
+		{
+			System.out.println("Record with the given hourly counts does not exist");
+		}
     	raf.close();
 	}
 	

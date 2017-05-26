@@ -1,5 +1,9 @@
 package tree;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.RandomAccessFile;
+
 public class BTree<Key extends Comparable<Key>, Value> {
 	
 	private static final int M = 4;
@@ -205,26 +209,132 @@ public class BTree<Key extends Comparable<Key>, Value> {
      * Unit tests the {@code BTree} data type.
      *
      * @param args the command-line arguments
+     * @throws Exception 
      */
-    public static void main(String[] args) {
-        BTree<Integer, Object> st = new BTree<Integer, Object>();
+    public static void main(String[] args) throws Exception 
+    {
+    	File file = new File("heapfile.txt");
+        final int PAGE_SIZE = 4096;
+        int numOfRecords = 15;
+        int recordID;
+		RandomAccessFile raf = new RandomAccessFile(file, "rw");
+		int offset = 0;
+    	raf.seek(offset);
+    	long sizeOfFile = file.length();
+    	long numOfPages = sizeOfFile / PAGE_SIZE;
+    	
+        BTree<Integer, Integer> st = new BTree<Integer, Integer>();
+    	
+    	for (int i=0; i < numOfPages; i++)
+    	{
+            int hourlyCounts;
+    		raf.seek(PAGE_SIZE*i);
+    		
+    		for (int j=0; j < numOfRecords; j++)
+    		{
+    			hourlyCounts = raf.readInt();
+    			//Denies insertion of empty records
+    			if (hourlyCounts == 0)
+    			{
+    				continue;
+    			}
+				recordID = raf.readInt();
+				st.put(hourlyCounts, recordID);
+				
+  				raf.readInt();
+				raf.readByte();
+				raf.readUTF();
+				raf.readInt();
+				raf.readUTF();
+				raf.readByte();
+				raf.readUTF();
+				raf.readByte();
+				raf.readByte();
+				raf.readUTF();
+    		}
+    	}    	
+    	raf.close();
+    	
+    	int hours = 150;
+    	int recordIDForHourlyCounts = st.get(hours);
+    	System.out.println("Hourly Counts: 150" + "RecordID: " + recordIDForHourlyCounts);
+    	System.out.println();
+    	searchRecord(file, hours);
+        
+        
+     /* st.put("cs.princeton.edu", "128.112.136.12");
+        st.put("hardvardsucks.com", "128.112.136.11");
+        st.put("simpsons.com",    "128.112.128.15");
 
-        st.put(20, "128.112.136.12");
-        st.put(50, "128.112.136.11");
-        st.put(30,    "128.112.128.15");
-
-
-
-        System.out.println("cs.princeton.edu:  " + st.get(20));
-        System.out.println("hardvardsucks.com: " + st.get(50));
-        System.out.println("simpsons.com:      " + st.get(30));
+        System.out.println("cs.princeton.edu:  " + st.get("cs.princeton.edu"));
+        System.out.println("hardvardsucks.com: " + st.get("hardvardsucks.com"));
+        System.out.println("simpsons.com:      " + st.get("simpsons.com"));
         System.out.println();
 
         System.out.println("size:    " + st.size());
         System.out.println("height:  " + st.height());
         System.out.println(st);
-        System.out.println();
+        System.out.println(); */
     }
-
+    
+    public static void searchRecord(File file, int hourlyCounts) throws Exception
+	{
+    	final int PAGE_SIZE = 4096;
+        int numOfRecords = 15;
+		RandomAccessFile raf = new RandomAccessFile(file, "rw");
+    	int currentHourlyCounts;
+    	boolean recordFound = false;
+		int offset = 0;
+    	raf.seek(offset);
+    	long sizeOfFile = file.length();
+    	long numOfPages = sizeOfFile / PAGE_SIZE;
+    	
+    	for (int i=0; i < numOfPages; i++)
+    	{
+    		raf.seek(PAGE_SIZE*i);
+    		
+    		for (int j=0; j < numOfRecords; j++)
+    		{
+    			currentHourlyCounts = raf.readInt();
+    			if (currentHourlyCounts != hourlyCounts)
+    			{
+    				raf.readInt();
+    				raf.readInt();
+    				raf.readByte();
+    				raf.readUTF();
+    				raf.readInt();
+    				raf.readUTF();
+    				raf.readByte();
+    				raf.readUTF();
+    				raf.readByte();
+    				raf.readByte();
+    				raf.readUTF();
+    				continue;
+    			}
+    			System.out.println("hourlyCounts: " + currentHourlyCounts);
+    	    	System.out.println("ID: " + raf.readInt());
+    			System.out.println("PID: " + raf.readInt());
+    	    	System.out.println("SlotNum: " + raf.readByte());
+    	    	System.out.println("DateTime: " + raf.readUTF());
+    	    	System.out.println("Year: " + raf.readInt());
+    	    	System.out.println("Month: " + raf.readUTF());
+    	    	System.out.println("mDate: " + raf.readByte());
+    	    	System.out.println("day: " + raf.readUTF());
+    	    	System.out.println("time: " + raf.readByte());
+    	    	System.out.println("sensorID: " + raf.readByte());
+    	    	System.out.println("sensorName: " + raf.readUTF());
+    	    	System.out.println();
+    	    	
+    	    	recordFound = true;
+    		}
+    	}
+    	
+		if (recordFound == false)
+		{
+			System.out.println("Record with the given hourly counts does not exist");
+		}
+    	raf.close();
+	}
+    
 	
 }
