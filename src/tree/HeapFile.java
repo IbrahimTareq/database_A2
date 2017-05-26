@@ -2,7 +2,6 @@ package tree;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.RandomAccessFile;
@@ -12,18 +11,26 @@ import java.util.ArrayList;
 public class HeapFile 
 {
 	private File file;
-	public static final int PAGE_SIZE = 4096;
-	int numOfRecords = 15;
+	public final int PAGE_SIZE;
+	public final int numOfRecords;
     
-    public HeapFile(File f) 
+    public HeapFile(File f, int pageSize) 
     {
         this.file = f;
+        this.PAGE_SIZE = pageSize;
+        
+        if (PAGE_SIZE == 4096){
+        	this.numOfRecords = 15;
+        }
+        else{
+        	this.numOfRecords = 30;
+        }
     }
 	
 	public ArrayList<HeapPage> insertRecords(ArrayList<Record> listOfRecords)
 	{
 		//Arraylist that will contain all the pages
-		ArrayList<HeapPage> pages = new ArrayList<HeapPage>();
+		ArrayList<HeapPage> pages = new ArrayList<HeapPage>(PAGE_SIZE);
 		int pageID = 0;
 		int slotNum = 0;
 		int k = 0;
@@ -145,7 +152,7 @@ public class HeapFile
 	public HeapPage createPage(int pid)
 	{
 		//Create new heap page
-		HeapPage newHeapPage = new HeapPage();
+		HeapPage newHeapPage = new HeapPage(PAGE_SIZE);
 		newHeapPage.setPageId(pid);
 		
 		return newHeapPage;

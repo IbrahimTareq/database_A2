@@ -1,13 +1,8 @@
 package tree;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.NoSuchElementException;
 
 
 public class HeapPage 
@@ -15,13 +10,13 @@ public class HeapPage
 	int pageID;
 	byte header[];
 	int numOfSlots;
-	Record records[];
-	
+	Record records[];	
 	int recordSize = 270;
-	public final int PAGE_SIZE = 4096;
+	public final int PAGE_SIZE;
 	
-	public HeapPage()
+	public HeapPage(int pageSize)
 	{
+		this.PAGE_SIZE = pageSize;
 		this.numOfSlots = getNumOfRecords();
 		records = new Record[numOfSlots];		
 		//Since header and records are same size, header index corresponds to record index
@@ -39,16 +34,6 @@ public class HeapPage
 		int len = PAGE_SIZE;
         ByteArrayOutputStream baos = new ByteArrayOutputStream(len);
         DataOutputStream dos = new DataOutputStream(baos);
-        
-        //Create the header of the page
-        /*for (int i=0; i<header.length; i++) 
-        {
-        	try {
-				dos.writeByte(header[i]);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-        }*/
         
         //Create the records
         for (int i=0; i<records.length; i++) 
@@ -86,7 +71,7 @@ public class HeapPage
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-        //int size = baos.size();
+
         return baos.toByteArray();
 	}
 	
@@ -95,7 +80,7 @@ public class HeapPage
         int count = 0; 
         for (int i = 0; i < header.length; i++)
         {
-        	//If the slot holds a value of 0/not 1 then increment count
+        	//If the slot holds a value of 0 then increment count
             if (!isSlotUsed(i)) {
                 count++;
             }
