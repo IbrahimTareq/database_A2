@@ -2,11 +2,13 @@ package tree;
 
 import java.io.File;
 import java.io.RandomAccessFile;
+import java.util.Scanner;
 
 public class BTreeApp {
 
 	public static void main(String[] args) throws Exception 
 	{
+		Scanner sc = new Scanner(System.in);
 		//Heapfile
 		File file = new File("heapfile.txt");
 		final int PAGE_SIZE_4096 = 4096;
@@ -14,12 +16,18 @@ public class BTreeApp {
     	
         BTree<Integer, Integer> st = new BTree<Integer, Integer>();
     	
+        //Page size MUST be the same as the page size entered in HeapApp
         insertIntoBtree(st, file, PAGE_SIZE_4096);
     	
     	System.out.println("Size of B-tree:	" + st.size());
-    	int hours = 150;
-    	int recordIDForHourlyCounts = st.get(hours);
-    	System.out.println("Records for hourlyCounts 150");
+    	System.out.println("\n\n");
+    	System.out.print("Enter hourlyCounts: ");
+    	String hourlyCounts = sc.nextLine();
+    	int hours = Integer.parseInt(hourlyCounts);
+    	
+    	//Retrieves all the records for the hourlyCounts
+    	st.get(hours);
+    	System.out.println("Records found for hourlyCounts " + hours + ":");
     	System.out.println();
     	searchRecord(file, hours, PAGE_SIZE_4096);
 	}
@@ -53,14 +61,25 @@ public class BTreeApp {
     			//Denies insertion of empty records
     			if (hourlyCounts == 0)
     			{
+    				raf.readInt();
+    				raf.readInt();
+    				raf.readByte();
+    				raf.readUTF();
+    				raf.readInt();
+    				raf.readUTF();
+    				raf.readByte();
+    				raf.readUTF();
+    				raf.readByte();
+    				raf.readByte();
+    				raf.readUTF();
     				continue;
     			}
 				recordID = raf.readInt();
 				st.put(hourlyCounts, recordID);
 				
-  				raf.readInt();
-				raf.readByte();
-				raf.readUTF();
+  				int a = raf.readInt();
+				int b = raf.readByte();
+				String c = raf.readUTF();
 				raf.readInt();
 				raf.readUTF();
 				raf.readByte();
@@ -122,10 +141,10 @@ public class BTreeApp {
     	    	System.out.println("Year: " + raf.readInt());
     	    	System.out.println("Month: " + raf.readUTF());
     	    	System.out.println("mDate: " + raf.readByte());
-    	    	System.out.println("day: " + raf.readUTF());
-    	    	System.out.println("time: " + raf.readByte());
-    	    	System.out.println("sensorID: " + raf.readByte());
-    	    	System.out.println("sensorName: " + raf.readUTF());
+    	    	System.out.println("Day: " + raf.readUTF());
+    	    	System.out.println("Time: " + raf.readByte());
+    	    	System.out.println("SensorID: " + raf.readByte());
+    	    	System.out.println("SensorName: " + raf.readUTF());
     	    	System.out.println();
     	    	
     	    	recordFound = true;

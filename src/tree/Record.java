@@ -1,11 +1,5 @@
 package tree;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.util.Date;
-
 public class Record implements java.io.Serializable {
 	
 	int id, year, mDate, time, sensorID, hourlyCounts;

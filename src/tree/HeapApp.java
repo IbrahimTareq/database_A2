@@ -10,18 +10,18 @@ public class HeapApp
 	
     public static void main(String[] args) throws Exception 
     {	 	
-        String csvFile = "C:\\Users\\Ibrahim\\Desktop\\peds.csv";
+        String csvFile = "peds.csv";
     	File file = new File("heapfile.txt");
         final int PAGE_SIZE_4096 = 4096;
         final int PAGE_SIZE_8192 = 8192;
         
         //Imports the data into the program from the .csv file
-//    	ImportData imp = new ImportData(csvFile);
-//    	ArrayList<Record> records = imp.importRecords();   	
-//    	demonstrateHeapfile(file, PAGE_SIZE_4096, records);        
+    	ImportData imp = new ImportData(csvFile);
+    	ArrayList<Record> records = imp.importRecords();   	
+    	demonstrateHeapfile(file, PAGE_SIZE_4096, records);        
         
     	//Add dummy records to test working of the heap file
-        addDummyData(file, PAGE_SIZE_4096);
+        //addDummyData(file, PAGE_SIZE_4096);
 	
     	
 //    	HeapFile heap = new HeapFile(file, PAGE_SIZE_4096);

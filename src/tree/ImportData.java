@@ -8,9 +8,6 @@ import java.io.IOException;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
-
-
 
 public class ImportData {
 	
@@ -93,7 +90,6 @@ public class ImportData {
     			int hourlyCounts = Integer.parseInt(data[9]);
     			
                 Record obj = new Record(id, dateTime, year, month, mDate, day, time, sensorID, sensorName, hourlyCounts);
-                //System.out.println("ID: "+obj.id + "Sensor Name: "+sensorName);
                 
                 ObjectOutput out = new ObjectOutputStream(bos);   
                 out.writeObject(obj);
