@@ -54,15 +54,6 @@ public class BTree<Key extends Comparable<Key>, Value> {
         return n;
     }
 
-    /**
-     * Returns the height of this B-tree (for debugging).
-     *
-     * @return the height of this B-tree
-     */
-    public int height() {
-        return height;
-    }
-
 
     /**
      * Returns the value associated with the given key.
@@ -81,7 +72,7 @@ public class BTree<Key extends Comparable<Key>, Value> {
         // external node
         if (ht == 0) {
             for (int j = 0; j < x.m; j++) {
-                if (eq(key, children[j].key)) return (Value) children[j].val;
+                if (equal(key, children[j].key)) return (Value) children[j].val;
             }
         }
 
@@ -158,39 +149,12 @@ public class BTree<Key extends Comparable<Key>, Value> {
         return t;    
     }
 
-    /**
-     * Returns a string representation of this B-tree (for debugging).
-     * @return a string representation of this B-tree.
-     */
-    public String toString() {
-        return toString(root, height, "") + "\n";
-    }
-
-    private String toString(Node h, int ht, String indent) {
-        StringBuilder s = new StringBuilder();
-        Entry[] children = h.children;
-
-        if (ht == 0) {
-            for (int j = 0; j < h.m; j++) {
-                s.append(indent + children[j].key + " " + children[j].val + "\n");
-            }
-        }
-        else {
-            for (int j = 0; j < h.m; j++) {
-                if (j > 0) s.append(indent + "(" + children[j].key + ")\n");
-                s.append(toString(children[j].next, ht-1, indent + "     "));
-            }
-        }
-        return s.toString();
-    }
-
-
     // comparison functions - make Comparable instead of Key to avoid casts
     private boolean less(Comparable k1, Comparable k2) {
         return k1.compareTo(k2) < 0;
     }
 
-    private boolean eq(Comparable k1, Comparable k2) {
+    private boolean equal(Comparable k1, Comparable k2) {
         return k1.compareTo(k2) == 0;
     }
 	

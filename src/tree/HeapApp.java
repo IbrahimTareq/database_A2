@@ -3,6 +3,7 @@ package tree;
 import java.io.File;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 
 public class HeapApp
@@ -14,15 +15,26 @@ public class HeapApp
     	File file = new File("heapfile.txt");
         final int PAGE_SIZE_4096 = 4096;
         final int PAGE_SIZE_8192 = 8192;
+        int pageSize;
+        String input;
         
         /**
          * Uncomment and run this block of code if you want to add all records into the heapfile
          * Before you do make sure you specify the desired page size
          */
         //Imports the data into the program from the .csv file
-//    	ImportData imp = new ImportData(csvFile);
-//    	ArrayList<Record> records = imp.importRecords();   	
-//    	demonstrateHeapfile(file, PAGE_SIZE_8192, records);        
+    	ImportData imp = new ImportData(csvFile);
+    	ArrayList<Record> records = imp.importRecords();   
+    	
+    	input = readInput();   	
+    	if (input.equals("a")){
+    		pageSize = PAGE_SIZE_4096;
+    	}
+    	else{
+    		pageSize = PAGE_SIZE_8192;
+    	}
+    	
+    	demonstrateHeapfile(file, pageSize, records);        
         
     	//Add dummy records to test working of the heap file
         //addDummyData(file, PAGE_SIZE_4096);
@@ -36,6 +48,26 @@ public class HeapApp
 //    	heap.searchRecord(file, 150); 
     	
     } 
+    
+    public static String readInput()
+    {
+        String input;
+    	Scanner scan = new Scanner(System.in);
+    	
+    	System.out.println("a - 4096 bytes");
+    	System.out.println("b - 8192 bytes");
+    	System.out.print("Select page size (a or b): ");
+    	while (!scan.hasNext("[ab]")) {
+    	    System.out.println("That's not a valid option!");
+    	    scan.next();
+    	    System.out.print("Select page size (a or b): ");
+    	}
+    	
+    	input = scan.next();
+    	scan.close();
+    	
+    	return input;
+    }
     
     public static void addDummyData(File file, int pageSize) throws Exception
     {  	
