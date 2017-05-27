@@ -152,6 +152,7 @@ public class BTreeApp
     	int currentHourlyCounts;
     	final int numOfRecords;
     	boolean recordFound = false;
+		int totalRecords = 0;
 		int offset = 0;
     	long sizeOfFile = file.length();
     	long numOfPages = sizeOfFile / pageSize;
@@ -200,14 +201,18 @@ public class BTreeApp
     	    	System.out.println("SensorName: " + raf.readUTF());
     	    	System.out.println();
     	    	
+    	    	totalRecords++;
     	    	recordFound = true;
     		}
     	}
     	
-		if (recordFound == false)
-		{
-			System.out.println("No record found for the given hourlyCount value!");
-		}
+		if (recordFound == false)		
+			System.out.println("No record found for the given hourlyCount value!\n");		
+		else{
+			System.out.println("Total records found: " + totalRecords);	
+			System.out.println();
+		}		
+		
     	raf.close();
 	}
 }

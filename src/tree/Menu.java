@@ -9,6 +9,7 @@ public class Menu {
 		int choice = -1;
 		Scanner scan = new Scanner(System.in);
 		BTreeApp btree = null;
+		HeapApp heap = null;
 		
 		while (choice != 0)
 		{
@@ -25,14 +26,23 @@ public class Menu {
 		    
 		    switch (choice) {
 		        case 1:
-		            HeapApp heap = new HeapApp();
+		            heap = new HeapApp();
 		            break;
 		        case 2:
-		            btree = new BTreeApp();
+		        	if (heap != null)
+			        	btree = new BTreeApp();
+		        	else
+		        		System.out.println("You need to create a heapfile first\n");
 		            break;
 		        case 3:
-		        	btree.retrieveRecordsFromHeap();
-		            break;
+		        	try{
+		        		btree.retrieveRecordsFromHeap();
+		        	}
+		        	catch (NullPointerException npe)
+		        	{
+		        		System.out.println("You need to create a b-tree first\n");
+		        	}
+		        	break;
 		        case 4:
 		            System.exit(0);
 		            break;

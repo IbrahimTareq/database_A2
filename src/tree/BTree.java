@@ -22,10 +22,11 @@ public class BTree<Key extends Comparable<Key>, Value> {
     // internal nodes: only use key and next
     // external nodes: only use key and value
     private static class Entry {
-        private Comparable key;
+        @SuppressWarnings("rawtypes")
+		private Comparable key;
         private final Object val;
         private Node next;     // helper field to iterate over array entries
-        public Entry(Comparable key, Object val, Node next) {
+        public Entry(@SuppressWarnings("rawtypes") Comparable key, Object val, Node next) {
             this.key  = key;
             this.val  = val;
             this.next = next;
@@ -66,7 +67,8 @@ public class BTree<Key extends Comparable<Key>, Value> {
         return search(root, key, height);
     }
 
-    private Value search(Node x, Key key, int ht) {
+    @SuppressWarnings("unchecked")
+	private Value search(Node x, Key key, int ht) {
         Entry[] children = x.children;
 
         // external node
@@ -150,11 +152,13 @@ public class BTree<Key extends Comparable<Key>, Value> {
     }
 
     // comparison functions - make Comparable instead of Key to avoid casts
-    private boolean less(Comparable k1, Comparable k2) {
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	private boolean less(Comparable k1, Comparable k2) {
         return k1.compareTo(k2) < 0;
     }
 
-    private boolean equal(Comparable k1, Comparable k2) {
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	private boolean equal(Comparable k1, Comparable k2) {
         return k1.compareTo(k2) == 0;
     }
 	
