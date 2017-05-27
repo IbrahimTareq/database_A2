@@ -9,8 +9,8 @@ import java.util.Scanner;
 public class HeapApp
 {
 	
-    public static void main(String[] args) throws Exception 
-    {	 	
+	public HeapApp() throws Exception
+	{
         String csvFile = "peds.csv";
     	File file = new File("heapfile.txt");
         final int PAGE_SIZE_4096 = 4096;
@@ -19,10 +19,8 @@ public class HeapApp
         String input;
         
         /**
-         * Uncomment and run this block of code if you want to add all records into the heapfile
-         * Before you do make sure you specify the desired page size
+         * Imports the data into the program from the .csv file
          */
-        //Imports the data into the program from the .csv file
     	ImportData imp = new ImportData(csvFile);
     	ArrayList<Record> records = imp.importRecords();   
     	
@@ -37,19 +35,17 @@ public class HeapApp
     	demonstrateHeapfile(file, pageSize, records);        
         
     	//Add dummy records to test working of the heap file
-        //addDummyData(file, PAGE_SIZE_4096);
+        //addDummyData(file, pageSize);
 	
         /**
          * Uncomment and run this block of code if you want to search for a record
-         * Before you do make sure the page size corresponds to that of the heapfile
          */
-//    	HeapFile heap = new HeapFile(file, PAGE_SIZE_8192);
+//	    	HeapFile heap = new HeapFile(file, pageSize);
      	//First parameter is the heapfile, second parameter is the hourlyCounts
-//    	heap.searchRecord(file, 150); 
-    	
-    } 
+//	    	heap.searchRecord(file, 150); 
+	}
     
-    public static String readInput()
+    public String readInput()
     {
         String input;
     	Scanner scan = new Scanner(System.in);
@@ -64,12 +60,12 @@ public class HeapApp
     	}
     	
     	input = scan.next();
-    	scan.close();
+    	//scan.close();
     	
     	return input;
     }
     
-    public static void addDummyData(File file, int pageSize) throws Exception
+    public void addDummyData(File file, int pageSize) throws Exception
     {  	
         ArrayList<Record> records = new ArrayList<Record>();
         
@@ -112,7 +108,7 @@ public class HeapApp
         demonstrateHeapfile(file, pageSize, records);
     }
 
-    public static void demonstrateHeapfile(File file, int pageSize, ArrayList<Record> records) throws Exception
+    public void demonstrateHeapfile(File file, int pageSize, ArrayList<Record> records) throws Exception
     {
     	int offset;
     	long sizeOfFile;

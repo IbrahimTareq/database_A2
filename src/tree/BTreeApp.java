@@ -4,18 +4,25 @@ import java.io.File;
 import java.io.RandomAccessFile;
 import java.util.Scanner;
 
-public class BTreeApp {
-
-	public static void main(String[] args) throws Exception 
+public class BTreeApp 
+{
+	BTree<Integer, Integer> st;
+	File file;
+	int pageSize;
+	
+	public BTreeApp() throws Exception
 	{
-		//Heapfile
-		File file = new File("heapfile.txt");
 		final int PAGE_SIZE_4096 = 4096;
         final int PAGE_SIZE_8192 = 8192;
         int pageSize;
         String input;
+		
+		//Heapfile
+		File file = new File("heapfile.txt");
+		this.file = file;
     	
         BTree<Integer, Integer> st = new BTree<Integer, Integer>();
+    	this.st = st;
     	
         //Reads input for page size from user
         input = readInput();   	
@@ -25,21 +32,21 @@ public class BTreeApp {
     	else{
     		pageSize = PAGE_SIZE_8192;
     	}
+        this.pageSize = pageSize;
     	
         //Page size MUST be the same as the page size entered in HeapApp
         insertIntoBtree(st, file, pageSize);
-        System.out.println("Records successfully inserted into Btree\n");
-        retrieveRecordsFromHeap(st, file, pageSize);
+        System.out.println("Records successfully inserted into B-tree\n");
+        //retrieveRecordsFromHeap(st, file, pageSize);
 	}
 	
-	public static void retrieveRecordsFromHeap(BTree<Integer, Integer> st, File file, int pageSize) throws Exception
+	public void retrieveRecordsFromHeap() throws Exception
 	{
 		Scanner sc = new Scanner(System.in);
 		int hours;
 		String hourlyCounts;
-		int input;
 		
-    	System.out.println("Size of B-tree:	" + st.size() + "\n");
+    	System.out.println("Size of B-tree:	" + this.st.size() + "\n");
     	System.out.print("Enter hourlyCounts: ");
     	
     	//Validates input
@@ -51,16 +58,16 @@ public class BTreeApp {
     	
     	hourlyCounts = sc.next();
     	hours = Integer.parseInt(hourlyCounts);
-    	sc.close();
+    	//sc.close();
     	
     	//Retrieves all the records for the hourlyCounts
-    	st.get(hours);
+    	this.st.get(hours);
     	System.out.println("Searching for records with hourlyCounts of " + hours + "..");
     	System.out.println();
-    	searchRecord(file, hours, pageSize);
+    	searchRecord(this.file, hours, this.pageSize);
 	}
 
-	public static String readInput()
+	public String readInput()
 	{
 		String input;
     	Scanner scan = new Scanner(System.in);
@@ -79,7 +86,7 @@ public class BTreeApp {
 	}
 	
 	//Inserts the records from the heapfile into the B-tree
-	public static void insertIntoBtree(BTree<Integer, Integer> st, File file, int pageSize) throws Exception
+	public void insertIntoBtree(BTree<Integer, Integer> st, File file, int pageSize) throws Exception
     {
     	RandomAccessFile raf;
 		final int numOfRecords;
@@ -139,7 +146,7 @@ public class BTreeApp {
     }
 	
 	//Searches and prints out records for given hourlyCounts from heapfile based on index from B-tree
-	public static void searchRecord(File file, int hourlyCounts, int pageSize) throws Exception
+	public void searchRecord(File file, int hourlyCounts, int pageSize) throws Exception
 	{
 		RandomAccessFile raf;
     	int currentHourlyCounts;
